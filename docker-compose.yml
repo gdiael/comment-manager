@@ -1,0 +1,83 @@
+version: '3'
+
+services:
+  gateway:
+    build:
+      context: ./gateway
+    ports:
+      - "8080:8080"  # Porta exposta para o mundo externo
+    networks:
+      - app-network
+    environment:
+      - LEADER_HOST=leader
+      - FOLLOWER1_HOST=follower1
+      - FOLLOWER2_HOST=follower2
+      - FOLLOWER3_HOST=follower3
+      - FOLLOWER4_HOST=follower4
+
+  leader:
+    build:
+      context: ./service
+    networks:
+      - app-network
+    environment:
+      - SERVER_ROLE=leader
+      - SERVER_PORT=8081
+    ports:
+      - "8081:8081"  # Opcional, para debug
+
+  follower1:
+    build:
+      context: ./service
+    networks:
+      - app-network
+    environment:
+      - SERVER_ROLE=follower
+      - SERVER_PORT=8082
+      - LEADER_HOST=leader
+      - FOLLOWER_ID=1
+    depends_on:
+      - leader
+
+  follower2:
+    build:
+      context: ./service
+    networks:
+      - app-network
+    environment:
+      - SERVER_ROLE=follower
+      - SERVER_PORT=8083
+      - LEADER_HOST=leader
+      - FOLLOWER_ID=2
+    depends_on:
+      - leader
+
+  follower3:
+    build:
+      context: ./service
+    networks:
+      - app-network
+    environment:
+      - SERVER_ROLE=follower
+      - SERVER_PORT=8084
+      - LEADER_HOST=leader
+      - FOLLOWER_ID=3
+    depends_on:
+      - leader
+
+  follower4:
+    build:
+      context: ./service
+    networks:
+      - app-network
+    environment:
+      - SERVER_ROLE=follower
+      - SERVER_PORT=8085
+      - LEADER_HOST=leader
+      - FOLLOWER_ID=4
+    depends_on:
+      - leader
+
+networks:
+  app-network:
+    driver: bridge
