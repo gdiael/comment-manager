@@ -5,7 +5,8 @@ services:
     build:
       context: ./gateway
     ports:
-      - "9095:9095"  # Porta exposta para o mundo externo
+      - "9095:9095"  #TCP
+      - "9095:9095/udp"
     networks:
       - app-network
     environment:

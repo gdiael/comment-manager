@@ -26,8 +26,7 @@ public class Server {
     }
 
     private void StartUDP(AppConfig cfg) {
-        System.out.println("UDP Server Started");
-        System.out.println(String.format("UDP port: %d",cfg.getPort()));
+        System.out.println(String.format("UDP Gateway Started at port: %d",cfg.getPort()));
         running = true;
 		try (DatagramSocket serverSocket = new DatagramSocket(cfg.getPort())) {
 			while (running) {

@@ -11,9 +11,9 @@ public class Gateway {
     public AppConfig cfg() {return config;}
 
     private void  start() {
-        //impressao das variaveis para verificacao
-        String url = String.format("%s:%d/%s", config.getHost(), config.getPort(), config.getWebMode());
-        System.out.println(url);
+        // impressao das variaveis para verificacao
+        // String url = String.format("%s:%d/%s", config.getHost(), config.getPort(), config.getWebMode());
+        // System.out.println(url);
         new Server(config);
     }
 
