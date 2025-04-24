@@ -36,7 +36,7 @@ public class Server {
 
 				String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
 
-				System.out.println("Received from client: " + message+ "\nFrom: " + receivePacket.getAddress());
+				Tokenizer.tokenizeUDP(message);
 			}
 		} catch (IOException e) {
             e.printStackTrace();
