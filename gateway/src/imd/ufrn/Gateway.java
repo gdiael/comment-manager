@@ -10,12 +10,15 @@ public class Gateway {
 
     public AppConfig cfg() {return config;}
 
+    private void  start() {
+        //impressao das variaveis para verificacao
+        String url = String.format("%s:%d/%s", config.getHost(), config.getPort(), config.getWebMode());
+        System.out.println(url);
+    }
+
     public static void main(String[] args) {
         Gateway g = new Gateway();
-        //impressao das variaveis para verificacao
-        System.out.println("Host: " + g.cfg().getHost());
-        System.out.println("Port: " + g.cfg().getPort());
-        System.out.println("Mode: " + g.cfg().getWebMode());
+        g.start();
     }
 
 }
