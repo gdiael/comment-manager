@@ -5,13 +5,13 @@ services:
     build:
       context: ./gateway
     ports:
-      - "8080:8080"  # Porta exposta para o mundo externo
+      - "9095:9095"  # Porta exposta para o mundo externo
     networks:
       - app-network
     environment:
       - URL_HOST=https://localhost
-      - URL_PORT=8080
-      - WEB_MODE=HTTP # HTTP UDP TCP
+      - URL_PORT=9095
+      - WEB_MODE=UDP # HTTP UDP TCP
       - LEADER_HOST=leader
       - FOLLOWER1_HOST=follower1
       - FOLLOWER2_HOST=follower2

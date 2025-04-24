@@ -14,6 +14,7 @@ public class Gateway {
         //impressao das variaveis para verificacao
         String url = String.format("%s:%d/%s", config.getHost(), config.getPort(), config.getWebMode());
         System.out.println(url);
+        new Server(config);
     }
 
     public static void main(String[] args) {
