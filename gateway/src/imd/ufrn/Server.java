@@ -8,7 +8,7 @@ public class Server {
     
     private boolean running = false;
 
-    public Server(AppConfig cfg) {
+    public Server(GatewayCfg cfg) {
         String webMode = cfg.getWebMode();
         switch (webMode) {
             case "UDP":
@@ -25,7 +25,7 @@ public class Server {
         }
     }
 
-    private void StartUDP(AppConfig cfg) {
+    private void StartUDP(GatewayCfg cfg) {
         System.out.println(String.format("UDP Gateway Started at port: %d",cfg.getPort()));
         running = true;
 		try (DatagramSocket serverSocket = new DatagramSocket(cfg.getPort())) {
@@ -47,11 +47,11 @@ public class Server {
         running = false;
     }
 
-    private void StartHTML(AppConfig cfg) {
+    private void StartHTML(GatewayCfg cfg) {
         System.out.println("to-do HTML");
     }
 
-    private void StartTCP(AppConfig cfg) {
+    private void StartTCP(GatewayCfg cfg) {
         System.out.println("to-do TCP");
     }
 

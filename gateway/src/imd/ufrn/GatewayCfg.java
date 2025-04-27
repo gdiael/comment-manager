@@ -1,11 +1,11 @@
 package imd.ufrn;
 
-public class AppConfig {
+public class GatewayCfg {
     private final String urlHost;
     private final int urlPort;
     private final String webMode; // UDP, TCP, HTTP
 
-    public AppConfig() {
+    public GatewayCfg() {
         urlHost = getEnvWithDefault("URL_HOST", "localhost");
         urlPort = Integer.parseInt(getEnvWithDefault("URL_PORT", "8080"));
         webMode = getEnvWithDefault("WEB_MODE", "HTTP");

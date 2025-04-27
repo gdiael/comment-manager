@@ -2,18 +2,15 @@ package imd.ufrn;
 
 public class Gateway {
 
-    private final AppConfig config;
+    private final GatewayCfg config;
     
     public Gateway() {
-        config = new AppConfig();
+        config = new GatewayCfg();
     }
 
-    public AppConfig cfg() {return config;}
+    public GatewayCfg cfg() {return config;}
 
     private void  start() {
-        // impressao das variaveis para verificacao
-        // String url = String.format("%s:%d/%s", config.getHost(), config.getPort(), config.getWebMode());
-        // System.out.println(url);
         new Server(config);
     }
 
