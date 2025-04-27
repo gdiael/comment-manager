@@ -27,6 +27,18 @@ services:
       - URL_PORT=9096
       - WEB_MODE=${WEBMODE} # HTTP UDP TCP
 
+  service2:
+    build:
+      context: ./service
+    ports:
+      - "9097:9097"
+      - "9097:9097/udp"
+    networks:
+      - app-network
+    environment:
+      - URL_HOST=https://localhost
+      - URL_PORT=9097
+      - WEB_MODE=${WEBMODE} # HTTP UDP TCP
 
   # follower2:
   #   build:
