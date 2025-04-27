@@ -1,8 +1,12 @@
 package imd.ufrn;
 
-public class Tokenizer {
-    String msg;
-    public Tokenizer() {
+public class GwProcessor {
+
+    public String data;
+
+    public String id;
+
+    public GwProcessor() {
 
     }
 

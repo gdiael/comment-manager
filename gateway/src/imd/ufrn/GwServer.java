@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-public class Server {
+public class GwServer {
     
     private boolean running = false;
 
-    public Server(GatewayCfg cfg) {
+    public GwServer(GatewayCfg cfg) {
         String webMode = cfg.getWebMode();
         switch (webMode) {
             case "UDP":
@@ -35,8 +35,8 @@ public class Server {
 				serverSocket.receive(receivePacket);
 
 				String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
-
-				Tokenizer.tokenizeUDP(message);
+                
+				GwProcessor.tokenizeUDP(message);
 			}
 		} catch (IOException e) {
             e.printStackTrace();

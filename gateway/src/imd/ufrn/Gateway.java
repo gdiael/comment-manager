@@ -11,7 +11,7 @@ public class Gateway {
     public GatewayCfg cfg() {return config;}
 
     private void  start() {
-        new Server(config);
+        new GwServer(config);
     }
 
     public static void main(String[] args) {
