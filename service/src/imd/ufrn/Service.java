@@ -11,7 +11,8 @@ public class Service {
     public ServiceCfg cfg() {return config;}
 
     private void  start() {
-        new SvServer(config);
+        // new SvServer(config);
+        new SvClient(config);
     }
 
     public static void main(String[] args) {

@@ -10,7 +10,7 @@ services:
     networks:
       - app-network
     environment:
-      - URL_HOST=https://localhost
+      - URL_HOST=localhost
       - URL_PORT=9095
       - WEB_MODE=${WEBMODE} # HTML UDP TCP
 
@@ -23,9 +23,11 @@ services:
     networks:
       - app-network
     environment:
-      - URL_HOST=https://localhost
+      - URL_HOST=localhost
       - URL_PORT=9096
       - WEB_MODE=${WEBMODE} # HTTP UDP TCP
+    depends_on:
+      - gateway
 
   service2:
     build:
@@ -36,48 +38,11 @@ services:
     networks:
       - app-network
     environment:
-      - URL_HOST=https://localhost
+      - URL_HOST=localhost
       - URL_PORT=9097
       - WEB_MODE=${WEBMODE} # HTTP UDP TCP
-
-  # follower2:
-  #   build:
-  #     context: ./service
-  #   networks:
-  #     - app-network
-  #   environment:
-  #     - SERVER_ROLE=follower
-  #     - SERVER_PORT=8083
-  #     - LEADER_HOST=leader
-  #     - FOLLOWER_ID=2
-  #   depends_on:
-  #     - leader
-
-  # follower3:
-  #   build:
-  #     context: ./service
-  #   networks:
-  #     - app-network
-  #   environment:
-  #     - SERVER_ROLE=follower
-  #     - SERVER_PORT=8084
-  #     - LEADER_HOST=leader
-  #     - FOLLOWER_ID=3
-  #   depends_on:
-  #     - leader
-
-  # follower4:
-  #   build:
-  #     context: ./service
-  #   networks:
-  #     - app-network
-  #   environment:
-  #     - SERVER_ROLE=follower
-  #     - SERVER_PORT=8085
-  #     - LEADER_HOST=leader
-  #     - FOLLOWER_ID=4
-  #   depends_on:
-  #     - leader
+    depends_on:
+      - gateway
 
 networks:
   app-network:

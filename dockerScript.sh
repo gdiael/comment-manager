@@ -43,7 +43,7 @@ while true; do
     9)
       echo "Ativando logs do docker compose..."
       sudo docker compose logs -f
-    #   break
+      break
       ;;
     0)
       echo "Saindo do script."

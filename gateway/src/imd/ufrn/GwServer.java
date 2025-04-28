@@ -36,7 +36,7 @@ public class GwServer {
 
 				String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 
-				GwProcessor.tokenizeUDP(message);
+				GwProcessor.processUDP(message);
 			}
 		} catch (IOException e) {
             e.printStackTrace();

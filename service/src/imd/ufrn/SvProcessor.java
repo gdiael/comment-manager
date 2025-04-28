@@ -1,8 +1,8 @@
 package imd.ufrn;
 
-public class GwProcessor {
-
-    public GwProcessor() {
+public class SvProcessor {
+    
+    public SvProcessor() {
 
     }
 
