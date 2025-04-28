@@ -1,18 +1,16 @@
-# version: '3.8'
-
 services:
   gateway:
     build:
       context: ./gateway
     ports:
-      - "9095:9095"  #TCP
+      - "9095:9095"
       - "9095:9095/udp"
     networks:
       - app-network
     environment:
       - URL_HOST=localhost
       - URL_PORT=9095
-      - WEB_MODE=${WEBMODE} # HTML UDP TCP
+      - WEB_MODE=${WEBMODE}
 
   service1:
     build:
@@ -25,7 +23,7 @@ services:
     environment:
       - URL_HOST=localhost
       - URL_PORT=9096
-      - WEB_MODE=${WEBMODE} # HTTP UDP TCP
+      - WEB_MODE=${WEBMODE}
     depends_on:
       - gateway
 
@@ -40,7 +38,7 @@ services:
     environment:
       - URL_HOST=localhost
       - URL_PORT=9097
-      - WEB_MODE=${WEBMODE} # HTTP UDP TCP
+      - WEB_MODE=${WEBMODE}
     depends_on:
       - gateway
 

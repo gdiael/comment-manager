@@ -16,8 +16,8 @@ public class GwProcessor {
         return "500|fail";
     }
 
-    public static String processHTML(String msg) {
-        System.out.println("todo: tokenizer HTML | msg: " + msg);
+    public static String processHTTP(String msg) {
+        System.out.println("todo: tokenizer HTTP | msg: " + msg);
         return "500|fail";
     }
 }

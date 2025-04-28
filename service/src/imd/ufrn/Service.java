@@ -2,7 +2,9 @@ package imd.ufrn;
 
 public class Service {
 
-    private final ServiceCfg config;
+    private ServiceCfg config;
+    private SvClient client;
+    private SvServer server;
     
     public Service() {
         config = new ServiceCfg();
@@ -11,8 +13,8 @@ public class Service {
     public ServiceCfg cfg() {return config;}
 
     private void  start() {
-        // new SvServer(config);
-        new SvClient(config);
+        client = new SvClient(config);
+        server = new SvServer(config);
     }
 
     public static void main(String[] args) {

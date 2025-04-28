@@ -17,8 +17,8 @@ public class SvServer {
             case "TCP":
                 StartTCP(cfg);
                 break;
-            case "HTML":
-                StartHTML(cfg);
+            case "HTTP":
+                StartHTTP(cfg);
                 break;
             default:
                 throw new IllegalArgumentException("unknown mode: " + webMode);
@@ -47,8 +47,8 @@ public class SvServer {
         running = false;
     }
 
-    private void StartHTML(ServiceCfg cfg) {
-        System.out.println("to-do HTML");
+    private void StartHTTP(ServiceCfg cfg) {
+        System.out.println("to-do HTTP");
     }
 
     private void StartTCP(ServiceCfg cfg) {
