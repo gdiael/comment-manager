@@ -3,26 +3,26 @@ services:
     build:
       context: ./gateway
     ports:
-      - "9095:9095"
-      - "9095:9095/udp"
+      - "${GWPORT}:${GWPORT}"
+      - "${GWPORT}:${GWPORT}/udp"
     networks:
       - app-network
     environment:
       - URL_HOST=localhost
-      - URL_PORT=9095
+      - URL_PORT=${GWPORT}
       - WEB_MODE=${WEBMODE}
 
   service1:
     build:
       context: ./service
     ports:
-      - "9096:9096"
-      - "9096:9096/udp"
+      - "${SV1PORT}:${SV1PORT}"
+      - "${SV1PORT}:${SV1PORT}/udp"
     networks:
       - app-network
     environment:
-      - URL_HOST=localhost
-      - URL_PORT=9096
+      - URL_HOST=service1
+      - URL_PORT=${SV1PORT}
       - WEB_MODE=${WEBMODE}
     depends_on:
       - gateway
@@ -31,13 +31,43 @@ services:
     build:
       context: ./service
     ports:
-      - "9097:9097"
-      - "9097:9097/udp"
+      - "${SV2PORT}:${SV2PORT}"
+      - "${SV2PORT}:${SV2PORT}/udp"
     networks:
       - app-network
     environment:
-      - URL_HOST=localhost
-      - URL_PORT=9097
+      - URL_HOST=service2
+      - URL_PORT=${SV2PORT}
+      - WEB_MODE=${WEBMODE}
+    depends_on:
+      - gateway
+
+  service3:
+    build:
+      context: ./service
+    ports:
+      - "${SV3PORT}:${SV3PORT}"
+      - "${SV3PORT}:${SV3PORT}/udp"
+    networks:
+      - app-network
+    environment:
+      - URL_HOST=service3
+      - URL_PORT=${SV3PORT}
+      - WEB_MODE=${WEBMODE}
+    depends_on:
+      - gateway
+
+  service4:
+    build:
+      context: ./service
+    ports:
+      - "${SV4PORT}:${SV4PORT}"
+      - "${SV4PORT}:${SV4PORT}/udp"
+    networks:
+      - app-network
+    environment:
+      - URL_HOST=service4
+      - URL_PORT=${SV4PORT}
       - WEB_MODE=${WEBMODE}
     depends_on:
       - gateway

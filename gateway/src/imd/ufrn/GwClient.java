@@ -8,43 +8,38 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 
-public class SvClient {
+public class GwClient {
     
-    private static final int GW_PORT = 9095;
-    private static final String GW_HOST = "gateway"; 
+    GatewayCfg cfg;
 
-    private volatile boolean sendingHeartBeat = false;
-    ServiceCfg cfg;
-
-    public SvClient(ServiceCfg config) {
+    public GwClient(GatewayCfg config) {
         cfg = config;
-        startHeartBeat();
     }
 
-    public void sendMsg(String msg) {
+    public void sendMsg(String msg, String host, int port) {
         String webMode = cfg.getWebMode();
         switch (webMode) {
             case "UDP":
-                sendMsgUDP(msg);
+                sendMsgUDP(msg, host, port);
                 break;
             case "TCP":
-                sendMsgTCP(msg);
+                sendMsgTCP(msg, host, port);
                 break;
             case "HTTP":
-                sendMsgHTTP(msg);
+                sendMsgHTTP(msg, host, port);
                 break;
             default:
                 throw new IllegalArgumentException("unknown mode: " + webMode);
         }
     }
 
-    private void sendMsgUDP(String msg) {
+    private void sendMsgUDP(String msg, String host, int port) {
 
         try(DatagramSocket socket = new DatagramSocket()) {
 
-            InetAddress gwAddress = InetAddress.getByName(GW_HOST);
+            InetAddress gwAddress = InetAddress.getByName(host);
             byte[] sendData = msg.getBytes();
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, gwAddress, GW_PORT);
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, gwAddress, port);
             socket.send(sendPacket);
 
         } catch (Exception e) {
@@ -53,8 +48,8 @@ public class SvClient {
         }
     }
 
-    private void sendMsgTCP(String msg) {
-        try (Socket socket = new Socket(GW_HOST, GW_PORT)) {
+    private void sendMsgTCP(String msg, String host, int port) {
+        try (Socket socket = new Socket(host, port)) {
             OutputStream output = socket.getOutputStream();
             output.write(msg.getBytes());
             output.flush();
@@ -64,9 +59,9 @@ public class SvClient {
         }
     }
 
-    private void sendMsgHTTP(String msg) {
+    private void sendMsgHTTP(String msg, String host, int port) {
         try {
-            URL url = new URL("http://" + GW_HOST + ":" + GW_PORT + "/");
+            URL url = new URL("http://" + host + ":" + String.valueOf(port) + "/");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -89,18 +84,4 @@ public class SvClient {
         }
     }
 
-    private void startHeartBeat() {
-        sendingHeartBeat = true;
-        new Thread(() -> {
-            while(sendingHeartBeat) {
-                try {
-                    sendMsg(String.format("status|200;mode|heartbeat;role|service;host|%s;port|%d;webmode|%s", cfg.getHost(), cfg.getPort(), cfg.getWebMode()));
-                    Thread.sleep(3000);
-                } catch (Exception e) {
-                    sendingHeartBeat = false;
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
 }
