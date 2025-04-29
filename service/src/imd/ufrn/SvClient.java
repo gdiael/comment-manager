@@ -91,6 +91,7 @@ public class SvClient {
 
     private void startHeartBeat() {
         sendingHeartBeat = true;
+        System.out.println("Enviando o heartbeat!");
         new Thread(() -> {
             while(sendingHeartBeat) {
                 try {

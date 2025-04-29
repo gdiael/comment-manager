@@ -13,24 +13,24 @@ public class SvServer {
     
     private boolean running = false;
 
-    public SvServer(ServiceCfg cfg) {
+    public SvServer(ServiceCfg cfg, SvClient client, SvProps props) {
         String webMode = cfg.getWebMode();
         switch (webMode) {
             case "UDP":
-                StartUDP(cfg);
+                StartUDP(cfg, client, props);
                 break;
             case "TCP":
-                StartTCP(cfg);
+                StartTCP(cfg, client, props);
                 break;
             case "HTTP":
-                StartHTTP(cfg);
+                StartHTTP(cfg, client, props);
                 break;
             default:
                 throw new IllegalArgumentException("unknown mode: " + webMode);
         }
     }
 
-    private void StartUDP(ServiceCfg cfg) {
+    private void StartUDP(ServiceCfg cfg, SvClient client, SvProps props) {
         System.out.println(String.format("UDP Service Started at port: %d",cfg.getPort()));
         running = true;
 		try (DatagramSocket serverSocket = new DatagramSocket(cfg.getPort())) {
@@ -41,7 +41,7 @@ public class SvServer {
 
 				String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 
-				SvProcessor.processUDP(message);
+				SvProcessor.processUDP(message, client, props);
 			}
 		} catch (IOException e) {
             e.printStackTrace();	
@@ -51,7 +51,7 @@ public class SvServer {
         running = false;
     }
 
-    private void StartTCP(ServiceCfg cfg) {
+    private void StartTCP(ServiceCfg cfg, SvClient client, SvProps props) {
         System.out.println(String.format("TCP Service Started at port: %d", cfg.getPort()));
         running = true;
         try (ServerSocket serverSocket = new ServerSocket(cfg.getPort())) {
@@ -63,7 +63,7 @@ public class SvServer {
                     int bytesRead = input.read(buffer);
                     if (bytesRead != -1) {
                         String message = new String(buffer, 0, bytesRead);
-                        SvProcessor.processTCP(message);
+                        SvProcessor.processTCP(message, client, props);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -81,7 +81,7 @@ public class SvServer {
         running = false;
     }
 
-    private void StartHTTP(ServiceCfg cfg) {
+    private void StartHTTP(ServiceCfg cfg, SvClient client, SvProps props) {
         System.out.println(String.format("HTTP Service Started at port: %d", cfg.getPort()));
         running = true;
         
@@ -92,7 +92,7 @@ public class SvServer {
                     byte[] requestBody = exchange.getRequestBody().readAllBytes();
                     String message = new String(requestBody, "UTF-8");
     
-                    SvProcessor.processHTTP(message);
+                    SvProcessor.processHTTP(message, client, props);
     
                     String response = "Message received";
                     exchange.sendResponseHeaders(200, response.length());
