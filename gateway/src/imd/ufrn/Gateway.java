@@ -4,18 +4,19 @@ public class Gateway {
 
     private final GatewayCfg config;
 
-    private GwServer server;
     private GwClient client;
+    private GwProps props;
 
     public Gateway() {
         config = new GatewayCfg();
+        props = new GwProps();
     }
 
     public GatewayCfg cfg() {return config;}
 
     private void  start() {
         client = new GwClient(config);
-        server = new GwServer(config, client);
+        new GwServer(config, client, props);
     }
 
     public static void main(String[] args) {

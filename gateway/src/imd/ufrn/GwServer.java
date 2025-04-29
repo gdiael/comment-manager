@@ -13,24 +13,24 @@ public class GwServer {
     
     private boolean running = false;
 
-    public GwServer(GatewayCfg cfg, GwClient client) {
+    public GwServer(GatewayCfg cfg, GwClient client, GwProps props) {
         String webMode = cfg.getWebMode();
         switch (webMode) {
             case "UDP":
-                StartUDP(cfg, client);
+                StartUDP(cfg, client, props);
                 break;
             case "TCP":
-                StartTCP(cfg, client);
+                StartTCP(cfg, client, props);
                 break;
             case "HTTP":
-                StartHTTP(cfg, client);
+                StartHTTP(cfg, client, props);
                 break;
             default:
                 throw new IllegalArgumentException("unknown mode: " + webMode);
         }
     }
 
-    private void StartUDP(GatewayCfg cfg, GwClient client) {
+    private void StartUDP(GatewayCfg cfg, GwClient client, GwProps props) {
         System.out.println(String.format("UDP Gateway Started at port: %d",cfg.getPort()));
         running = true;
 		try (DatagramSocket serverSocket = new DatagramSocket(cfg.getPort())) {
@@ -41,7 +41,7 @@ public class GwServer {
 
 				String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 
-				GwProcessor.processUDP(message, client);
+				GwProcessor.processUDP(message, client, props);
 			}
 		} catch (IOException e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class GwServer {
         running = false;
     }
 
-    private void StartTCP(GatewayCfg cfg, GwClient client) {
+    private void StartTCP(GatewayCfg cfg, GwClient client, GwProps props) {
         System.out.println(String.format("TCP Gateway Started at port: %d", cfg.getPort()));
         running = true;
         try (ServerSocket serverSocket = new ServerSocket(cfg.getPort())) {
@@ -64,7 +64,7 @@ public class GwServer {
                     int bytesRead = input.read(buffer);
                     if (bytesRead != -1) {
                         String message = new String(buffer, 0, bytesRead);
-                        GwProcessor.processTCP(message, client);
+                        GwProcessor.processTCP(message, client, props);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -82,7 +82,7 @@ public class GwServer {
         running = false;
     }
 
-    private void StartHTTP(GatewayCfg cfg, GwClient client) {
+    private void StartHTTP(GatewayCfg cfg, GwClient client, GwProps props) {
         System.out.println(String.format("HTTP Gateway Started at port: %d", cfg.getPort()));
         running = true;
         
@@ -93,7 +93,7 @@ public class GwServer {
                     byte[] requestBody = exchange.getRequestBody().readAllBytes();
                     String message = new String(requestBody, "UTF-8");
     
-                    GwProcessor.processHTTP(message, client);
+                    GwProcessor.processHTTP(message, client, props);
     
                     String response = "Message received";
                     exchange.sendResponseHeaders(200, response.length());

@@ -1,45 +1,41 @@
 package imd.ufrn;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class GwProcessor {
 
-    private static List<Map<String, String>> services = new LinkedList<>();
-
     public GwProcessor() {
     }
 
-    public static String processUDP(String msg, GwClient client) {
+    public static String processUDP(String msg, GwClient client, GwProps props) {
         Map<String, String> dict = messageToMap(msg);
         String mode = dict.get("mode");
         if (mode.equals("heartbeat")) {
-            processHeartBeat(dict, client);
+            processHeartBeat(dict, client, props);
         }
         return "status|200";
     }
 
-    public static String processTCP(String msg, GwClient client) {
+    public static String processTCP(String msg, GwClient client, GwProps props) {
         // System.out.println("todo: tokenizer TCP | msg: " + msg);
-        return processUDP(msg, client);
+        return processUDP(msg, client, props);
     }
 
-    public static String processHTTP(String msg, GwClient client) {
+    public static String processHTTP(String msg, GwClient client, GwProps props) {
         // System.out.println("todo: tokenizer HTTP | msg: " + msg);
-        return processUDP(msg, client);
+        return processUDP(msg, client, props);
     }
 
-    private static void processHeartBeat(Map<String, String> dict, GwClient client) {
+    private static void processHeartBeat(Map<String, String> dict, GwClient client, GwProps props) {
         boolean isNewService = false;
         String serviceMode = "follower";
-        if(services.size() == 0) {
+        if(props.services.size() == 0) {
             serviceMode = "leader";
             isNewService = true;
         } else {
             isNewService = true;
-            for (Map<String,String> serv : services) {
+            for (Map<String,String> serv : props.services) {
                 if(serv.get("port").equals(dict.get("port"))) {
                     isNewService = false;
                     break;
@@ -48,7 +44,7 @@ public class GwProcessor {
         }
         if (isNewService) {
             dict.put("servicemode", serviceMode);
-            services.add(dict);
+            props.services.add(dict);
             String sendMsg = String.format("status|200;mode|newservice;servicemode|%s;", serviceMode);
             client.sendMsg(sendMsg, dict.get("host"), Integer.parseInt(dict.get("port")));
         }

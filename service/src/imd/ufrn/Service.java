@@ -4,7 +4,6 @@ public class Service {
 
     private ServiceCfg config;
     private SvClient client;
-    private SvServer server;
     private SvProps props;
     
     public Service() {
@@ -16,7 +15,7 @@ public class Service {
 
     private void  start() {
         client = new SvClient(config);
-        server = new SvServer(config, client, props);
+        new SvServer(config, client, props);
     }
 
     public static void main(String[] args) {
