@@ -16,6 +16,10 @@ public class SvProcessor {
             // serviço foi cadastrado no gateway
             System.out.println("Serviço cadastrado como: " + dict.get("servicemode"));
             props.isLeader = true;
+            return "status|200";
+        }
+        if(mode.equals("addcomment")) {
+            System.out.println("novo comentário: " + dict.toString());
         }
         return "status|200";
     }

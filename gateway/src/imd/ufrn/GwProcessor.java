@@ -13,6 +13,11 @@ public class GwProcessor {
         String mode = dict.get("mode");
         if (mode.equals("heartbeat")) {
             processHeartBeat(dict, client, props);
+            return "status|200";
+        }
+        if (mode.equals("addcomment")) {
+            processAddComment(dict, client, props);
+            return "status|200";
         }
         return "status|200";
     }
@@ -47,6 +52,14 @@ public class GwProcessor {
             props.services.add(dict);
             String sendMsg = String.format("status|200;mode|newservice;servicemode|%s;", serviceMode);
             client.sendMsg(sendMsg, dict.get("host"), Integer.parseInt(dict.get("port")));
+        }
+    }
+
+    private static void processAddComment(Map<String,String> dict, GwClient client, GwProps props) {
+        for (Map<String, String> serv : props.services) {
+            if(serv.get("servicemode").equals("leader")) {
+                client.sendMsg(mapToMessage(dict), serv.get("host"), Integer.parseInt(serv.get("port")));
+            }
         }
     }
 

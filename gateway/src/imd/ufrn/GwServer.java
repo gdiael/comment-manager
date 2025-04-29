@@ -41,7 +41,16 @@ public class GwServer {
 
 				String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 
-				GwProcessor.processUDP(message, client, props);
+				String response = GwProcessor.processUDP(message, client, props);
+
+                byte[] responseData = response.getBytes();
+                DatagramPacket responsePacket = new DatagramPacket(
+                        responseData,
+                        responseData.length,
+                        receivePacket.getAddress(),
+                        receivePacket.getPort()
+                    );
+                serverSocket.send(responsePacket);
 			}
 		} catch (IOException e) {
             e.printStackTrace();
